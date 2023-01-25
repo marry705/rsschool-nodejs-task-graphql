@@ -40,7 +40,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
       },
     },
     async function (request, reply): Promise<PostEntity> {
-			const user = await this.db.users.findOne({
+			const user = await fastify.db.users.findOne({
         key: 'id',
         equals: request.body.userId
       });
@@ -49,7 +49,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
 				return reply.status(404).send({ message: ErrorMessages.USER_ERROR });
 			}
 
-			const newPost = await this.db.posts.create(request.body);
+			const newPost = await fastify.db.posts.create(request.body);
 
 			return reply.send(newPost);
     }
