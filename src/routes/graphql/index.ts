@@ -2,17 +2,17 @@ import { FastifyPluginAsyncJsonSchemaToTs } from '@fastify/type-provider-json-sc
 import { graphqlBodySchema } from './schema';
 
 const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
-  fastify
+	fastify
 ): Promise<void> => {
-  fastify.post(
-    '/',
-    {
-      schema: {
-        body: graphqlBodySchema,
-      },
-    },
-    async function (request, reply) {}
-  );
+	fastify.post(
+		'/',
+		{
+			schema: {
+				body: graphqlBodySchema,
+			},
+		},
+		async function (request, reply) {}
+	);
 };
 
 export default plugin;
