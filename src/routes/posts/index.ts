@@ -2,6 +2,7 @@ import { FastifyPluginAsyncJsonSchemaToTs } from '@fastify/type-provider-json-sc
 import { idParamSchema } from '../../utils/reusedSchemas';
 import { createPostBodySchema, changePostBodySchema } from './schema';
 import type { PostEntity } from '../../utils/DB/entities/DBPosts';
+import { ErrorMessages } from '../../utils/response';
 
 const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
   fastify
@@ -24,7 +25,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
       });
 
       if (!post) {
-        return reply.code(404).send({ message: 'No such post' });
+        return reply.code(404).send({ message: ErrorMessages.POST_ERROR });
       }
 
       return reply.send(post);
@@ -45,7 +46,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
       });
 
 			if (!user) {
-				return reply.status(404).send({ message: 'No such user' });
+				return reply.status(404).send({ message: ErrorMessages.USER_ERROR });
 			}
 
 			const newPost = await this.db.posts.create(request.body);
