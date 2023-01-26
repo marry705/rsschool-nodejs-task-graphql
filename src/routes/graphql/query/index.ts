@@ -21,25 +21,25 @@ export const RootQuery = new GraphQLObjectType({
 	fields: {
 		users: {
 			type: new GraphQLList(GraphQLUser),
-			async resolve(_, _, context): Promise<UserEntity[]> {
+			async resolve(source, args, context): Promise<UserEntity[]> {
 				return await context.db.users.findMany();
 			},
 		},
 		profiles: {
 			type: new GraphQLList(GraphQLProfile),
-			async resolve(_, _, context): Promise<ProfileEntity[]> {
+			async resolve(source, args, context): Promise<ProfileEntity[]> {
 				return await context.db.profiles.findMany();
 			},
 		},
 		posts: {
 			type: new GraphQLList(GraphQLPost),
-			async resolve(_, _, context): Promise<PostEntity[]> {
+			async resolve(source, args, context): Promise<PostEntity[]> {
 				return await context.db.posts.findMany();
 			},
 		},
 		memberTypes: {
 			type: new GraphQLList(GraphQLMemberType),
-			async resolve(_, _, context): Promise<MemberTypeEntity[]> {
+			async resolve(source, args, context): Promise<MemberTypeEntity[]> {
 				return await context.db.memberTypes.findMany();
 			},
 		},
