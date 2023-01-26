@@ -27,7 +27,9 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
 			});
 
 			if (!member) {
-				return reply.code(404).send({ message: ErrorMessages.MEMBER_TYPE_ERROR });
+				return reply
+					.code(404)
+					.send({ message: ErrorMessages.MEMBER_TYPE_ERROR });
 			}
 
 			return reply.send(member);
