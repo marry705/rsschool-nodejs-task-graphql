@@ -1,4 +1,5 @@
-export { User } from './User';
-export { Post } from './Post';
-export { Profile } from './Profile';
-export { MemberType } from './MemberType';
+export { GraphQLUser } from './GraphQLUser';
+export { GraphQLPost } from './GraphQLPost';
+export { GraphQLProfile } from './GraphQLProfile';
+export { GraphQLMemberType } from './GraphQLMemberType';
+export { CreateUserDtoInput, UpdateUserDtoInput } from './GraphQLUserInput';

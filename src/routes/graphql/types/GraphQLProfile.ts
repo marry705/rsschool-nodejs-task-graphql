@@ -5,8 +5,8 @@ import {
 	GraphQLString,
 } from 'graphql';
 
-export const Profile = new GraphQLObjectType({
-	name: 'Profile',
+export const GraphQLProfile = new GraphQLObjectType({
+	name: 'GraphQLProfile',
 	fields: () => ({
 		id: { type: GraphQLString },
 		userId: { type: GraphQLID },
