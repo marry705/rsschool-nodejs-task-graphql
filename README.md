@@ -1,4 +1,6 @@
 ## Assignment: Graphql
+### Test:
+Use Postman for testing. Request examples in `src/test__schema`.
 ### Tasks:
 1. Add logic to the restful endpoints (users, posts, profiles, member-types folders in ./src/routes).  
    1.1. npm run test - 100%  
