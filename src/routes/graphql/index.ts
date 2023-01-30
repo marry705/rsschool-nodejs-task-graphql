@@ -1,6 +1,7 @@
 import { FastifyPluginAsyncJsonSchemaToTs } from '@fastify/type-provider-json-schema-to-ts';
 import { graphql, GraphQLSchema } from 'graphql';
 import { RootMutation } from './mutations';
+import { RootQuery } from './query';
 import { graphqlBodySchema } from './schema';
 
 const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
@@ -15,7 +16,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
 		},
 		async function (request) {
 			const schema: GraphQLSchema = new GraphQLSchema({
-				// query: RootQuery,
+				query: RootQuery,
 				mutation: RootMutation,
 			});
 

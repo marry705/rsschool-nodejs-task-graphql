@@ -1,3 +1,4 @@
+import { FastifyInstance } from 'fastify';
 import {
 	GraphQLList,
 	GraphQLNonNull,
@@ -21,25 +22,41 @@ export const RootQuery = new GraphQLObjectType({
 	fields: {
 		users: {
 			type: new GraphQLList(GraphQLUser),
-			async resolve(source, args, context): Promise<UserEntity[]> {
+			async resolve(
+				source,
+				args,
+				context: FastifyInstance
+			): Promise<UserEntity[]> {
 				return await context.db.users.findMany();
 			},
 		},
 		profiles: {
 			type: new GraphQLList(GraphQLProfile),
-			async resolve(source, args, context): Promise<ProfileEntity[]> {
+			async resolve(
+				source,
+				args,
+				context: FastifyInstance
+			): Promise<ProfileEntity[]> {
 				return await context.db.profiles.findMany();
 			},
 		},
 		posts: {
 			type: new GraphQLList(GraphQLPost),
-			async resolve(source, args, context): Promise<PostEntity[]> {
+			async resolve(
+				source,
+				args,
+				context: FastifyInstance
+			): Promise<PostEntity[]> {
 				return await context.db.posts.findMany();
 			},
 		},
 		memberTypes: {
 			type: new GraphQLList(GraphQLMemberType),
-			async resolve(source, args, context): Promise<MemberTypeEntity[]> {
+			async resolve(
+				source,
+				args,
+				context: FastifyInstance
+			): Promise<MemberTypeEntity[]> {
 				return await context.db.memberTypes.findMany();
 			},
 		},
@@ -48,7 +65,7 @@ export const RootQuery = new GraphQLObjectType({
 			args: {
 				id: { type: new GraphQLNonNull(GraphQLString) },
 			},
-			async resolve(_, { id }, context): Promise<UserEntity> {
+			async resolve(_, { id }, context: FastifyInstance): Promise<UserEntity> {
 				const user = await context.db.users.findOne({
 					key: 'id',
 					equals: id,
@@ -66,7 +83,11 @@ export const RootQuery = new GraphQLObjectType({
 			args: {
 				id: { type: new GraphQLNonNull(GraphQLString) },
 			},
-			async resolve(_, { id }, context): Promise<ProfileEntity> {
+			async resolve(
+				_,
+				{ id },
+				context: FastifyInstance
+			): Promise<ProfileEntity> {
 				const profile = await context.db.profiles.findOne({
 					key: 'id',
 					equals: id,
@@ -84,7 +105,7 @@ export const RootQuery = new GraphQLObjectType({
 			args: {
 				id: { type: new GraphQLNonNull(GraphQLString) },
 			},
-			async resolve(_, { id }, context): Promise<PostEntity> {
+			async resolve(_, { id }, context: FastifyInstance): Promise<PostEntity> {
 				const post = await context.db.posts.findOne({
 					key: 'id',
 					equals: id,
@@ -102,7 +123,11 @@ export const RootQuery = new GraphQLObjectType({
 			args: {
 				id: { type: new GraphQLNonNull(GraphQLString) },
 			},
-			async resolve(_, { id }, context): Promise<MemberTypeEntity> {
+			async resolve(
+				_,
+				{ id },
+				context: FastifyInstance
+			): Promise<MemberTypeEntity> {
 				const memberType = await context.db.memberTypes.findOne({
 					key: 'id',
 					equals: id,

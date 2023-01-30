@@ -1,10 +1,5 @@
-import {
-	GraphQLID,
-	GraphQLInt,
-	GraphQLNonNull,
-	GraphQLObjectType,
-	GraphQLString,
-} from 'graphql';
+import { FastifyInstance } from 'fastify';
+import { GraphQLObjectType } from 'graphql';
 import { MemberTypeEntity } from '../../../utils/DB/entities/DBMemberTypes';
 import { PostEntity } from '../../../utils/DB/entities/DBPosts';
 import { ProfileEntity } from '../../../utils/DB/entities/DBProfiles';
@@ -12,6 +7,7 @@ import { UserEntity } from '../../../utils/DB/entities/DBUsers';
 import { ErrorMessages } from '../../../utils/response';
 import {
 	CreatePostDtoInput,
+	CreateProfileDtoInput,
 	CreateUserDtoInput,
 	GraphQLMemberType,
 	GraphQLPost,
@@ -34,7 +30,7 @@ export const RootMutation = new GraphQLObjectType({
 			async resolve(
 				_,
 				{ input }: Record<'input', Omit<UserEntity, 'id'>>,
-				context
+				context: FastifyInstance
 			) {
 				return await context.db.users.create(input);
 			},
@@ -45,9 +41,9 @@ export const RootMutation = new GraphQLObjectType({
 			async resolve(
 				_,
 				{ input }: Record<'input', Omit<PostEntity, 'id'>>,
-				context
+				context: FastifyInstance
 			) {
-				const { userId, title, content } = input;
+				const { userId } = input;
 
 				const user = await context.db.users.findOne({
 					key: 'id',
@@ -58,41 +54,21 @@ export const RootMutation = new GraphQLObjectType({
 					throw context.httpErrors.notFound(ErrorMessages.USER_ERROR);
 				}
 
-				const newPost = await context.db.posts.create({
-					userId,
-					title,
-					content,
-				});
+				const newPost = await context.db.posts.create(input);
 
 				return newPost;
 			},
 		},
 		createProfile: {
 			type: GraphQLProfile,
-			args: {
-				userId: { type: new GraphQLNonNull(GraphQLID) },
-				avatar: { type: new GraphQLNonNull(GraphQLString) },
-				sex: { type: new GraphQLNonNull(GraphQLString) },
-				birthday: { type: new GraphQLNonNull(GraphQLInt) },
-				country: { type: new GraphQLNonNull(GraphQLString) },
-				street: { type: new GraphQLNonNull(GraphQLString) },
-				city: { type: new GraphQLNonNull(GraphQLString) },
-				memberTypeId: { type: new GraphQLNonNull(GraphQLString) },
-			},
+			args: { input: { type: CreateProfileDtoInput } },
 			async resolve(
 				_,
-				{
-					userId,
-					avatar,
-					sex,
-					birthday,
-					country,
-					street,
-					city,
-					memberTypeId,
-				}: Omit<ProfileEntity, 'id'>,
-				context
+				{ input }: Record<'input', Omit<ProfileEntity, 'id'>>,
+				context: FastifyInstance
 			) {
+				const { userId } = input;
+
 				const user = await context.db.users.findOne({
 					key: 'id',
 					equals: userId,
@@ -109,16 +85,7 @@ export const RootMutation = new GraphQLObjectType({
 					throw context.httpErrors.notFound(ErrorMessages.USER_ERROR);
 				}
 
-				const newProfile = await context.db.profiles.create({
-					userId,
-					avatar,
-					sex,
-					birthday,
-					country,
-					street,
-					city,
-					memberTypeId,
-				});
+				const newProfile = await context.db.profiles.create(input);
 
 				if (
 					!memberTypes.includes(newProfile.memberTypeId) ||
@@ -134,9 +101,14 @@ export const RootMutation = new GraphQLObjectType({
 		updateUser: {
 			type: GraphQLUser,
 			args: { input: { type: UpdateUserDtoInput } },
-			async resolve(_, { input }: Record<'input', UserEntity>, context) {
+			async resolve(
+				_,
+				{ input }: Record<'input', UserEntity>,
+				context: FastifyInstance
+			) {
 				try {
-					const updatedUser = await context.db.users.change(input);
+					const { id } = input;
+					const updatedUser = await context.db.users.change(id, input);
 
 					return updatedUser;
 				} catch (error) {
@@ -147,9 +119,14 @@ export const RootMutation = new GraphQLObjectType({
 		updatePost: {
 			type: GraphQLPost,
 			args: { input: { type: UpdatePostDtoInput } },
-			async resolve(_, { input }: Record<'input', PostEntity>, context) {
+			async resolve(
+				_,
+				{ input }: Record<'input', PostEntity>,
+				context: FastifyInstance
+			) {
 				try {
-					const updatedPost = await context.db.posts.change(input);
+					const { id } = input;
+					const updatedPost = await context.db.posts.change(id, input);
 
 					return updatedPost;
 				} catch (error) {
@@ -160,9 +137,14 @@ export const RootMutation = new GraphQLObjectType({
 		updateProfile: {
 			type: GraphQLProfile,
 			args: { input: { type: UpdateProfileDtoInput } },
-			async resolve(_, { input }: Record<'input', ProfileEntity>, context) {
+			async resolve(
+				_,
+				{ input }: Record<'input', ProfileEntity>,
+				context: FastifyInstance
+			) {
 				try {
-					const updatedProfile = await context.db.profiles.change(input);
+					const { id } = input;
+					const updatedProfile = await context.db.profiles.change(id, input);
 
 					return updatedProfile;
 				} catch (error) {
@@ -173,9 +155,14 @@ export const RootMutation = new GraphQLObjectType({
 		updateMemberType: {
 			type: GraphQLMemberType,
 			args: { input: { type: UpdateMemberDtoInput } },
-			async resolve(_, { input }: Record<'input', MemberTypeEntity>, context) {
+			async resolve(
+				_,
+				{ input }: Record<'input', MemberTypeEntity>,
+				context: FastifyInstance
+			) {
 				try {
-					const newMember = await context.db.memberTypes.change(input);
+					const { id } = input;
+					const newMember = await context.db.memberTypes.change(id, input);
 
 					return newMember;
 				} catch (error) {
@@ -189,7 +176,7 @@ export const RootMutation = new GraphQLObjectType({
 			async resolve(
 				_,
 				{ input }: Record<'input', Pick<ProfileEntity, 'id' | 'userId'>>,
-				context
+				context: FastifyInstance
 			) {
 				const { id, userId } = input;
 
@@ -242,7 +229,7 @@ export const RootMutation = new GraphQLObjectType({
 			async resolve(
 				_,
 				{ input }: Record<'input', Pick<ProfileEntity, 'id' | 'userId'>>,
-				context
+				context: FastifyInstance
 			) {
 				const { id, userId } = input;
 
