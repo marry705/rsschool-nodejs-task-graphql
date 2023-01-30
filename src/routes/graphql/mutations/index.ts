@@ -109,14 +109,20 @@ export const RootMutation = new GraphQLObjectType({
 				{ data }: Record<'data', UserEntity>,
 				context: FastifyInstance
 			) => {
-				try {
-					const { id } = data;
-					const updatedUser = await context.db.users.change(id, data);
+				const { id } = data;
+				
+				const user = await context.db.users.findOne({
+					key: 'id',
+					equals: id
+				});
 
-					return updatedUser;
-				} catch (error) {
-					return error;
+				if (!user) {
+					throw context.httpErrors.notFound(ErrorMessages.USER_ERROR);
 				}
+
+				const updatedUser = await context.db.users.change(id, data);
+
+				return updatedUser;
 			},
 		},
 		updatePost: {
@@ -127,14 +133,20 @@ export const RootMutation = new GraphQLObjectType({
 				{ data }: Record<'data', PostEntity>,
 				context: FastifyInstance
 			) => {
-				try {
-					const { id } = data;
-					const updatedPost = await context.db.posts.change(id, data);
+				const { id } = data;
+				
+				const post = await context.db.posts.findOne({
+					key: 'id',
+					equals: id
+				});
 
-					return updatedPost;
-				} catch (error) {
-					return error;
+				if (!post) {
+					throw context.httpErrors.notFound(ErrorMessages.POST_ERROR);
 				}
+
+				const updatedPost = await context.db.posts.change(id, data);
+
+				return updatedPost;
 			},
 		},
 		updateProfile: {
@@ -145,14 +157,20 @@ export const RootMutation = new GraphQLObjectType({
 				{ data }: Record<'data', ProfileEntity>,
 				context: FastifyInstance
 			) => {
-				try {
-					const { id } = data;
-					const updatedProfile = await context.db.profiles.change(id, data);
+				const { id } = data;
+				
+				const profile = await context.db.profiles.findOne({
+					key: 'id',
+					equals: id
+				});
 
-					return updatedProfile;
-				} catch (error) {
-					return error;
+				if (!profile) {
+					throw context.httpErrors.notFound(ErrorMessages.PROFILE_ERROR);
 				}
+
+				const updatedProfile = await context.db.profiles.change(id, data);
+
+				return updatedProfile;
 			},
 		},
 		updateMemberType: {
@@ -163,14 +181,20 @@ export const RootMutation = new GraphQLObjectType({
 				{ data }: Record<'data', MemberTypeEntity>,
 				context: FastifyInstance
 			) => {
-				try {
-					const { id } = data;
-					const newMember = await context.db.memberTypes.change(id, data);
+				const { id } = data;
+				
+				const member = await context.db.memberTypes.findOne({
+					key: 'id',
+					equals: id
+				});
 
-					return newMember;
-				} catch (error) {
-					return error;
+				if (!member) {
+					throw context.httpErrors.notFound(ErrorMessages.MEMBER_TYPE_ERROR);
 				}
+
+				const newMember = await context.db.memberTypes.change(id, data);
+
+				return newMember;
 			},
 		},
 		subscribeUser: {
@@ -182,6 +206,10 @@ export const RootMutation = new GraphQLObjectType({
 				context: FastifyInstance
 			) => {
 				const { id, userId } = data;
+
+				if (id === userId) {
+					throw context.httpErrors.badRequest(ErrorMessages.USER_SUBSCRIBE);
+				}
 
 				const subscriber = await context.db.users.findOne({
 					key: 'id',

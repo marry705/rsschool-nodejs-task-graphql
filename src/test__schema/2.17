@@ -1,7 +1,7 @@
 mutation {
     unSubscribeUser(data: {
         id: "GUID"
-        unsubscribeFromUserId: "GUID"
+        userId: "GUID"
     })
     {
         id
