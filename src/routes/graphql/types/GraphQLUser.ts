@@ -35,7 +35,7 @@ export const GraphQLUser = new GraphQLObjectType({
 		},
 		userSubscribedTo: {
 			type: new GraphQLList(GraphQLUser),
-			async resolve({ id }, args, context: FastifyInstance) {
+			resolve: async ({ id }, args, context: FastifyInstance) => {
 				return await context.db.users.findMany({
 					key: 'subscribedToUserIds',
 					inArray: id,
@@ -44,7 +44,7 @@ export const GraphQLUser = new GraphQLObjectType({
 		},
 		memberType: {
 			type: GraphQLMemberType,
-			async resolve({ id }, args, context: FastifyInstance) {
+			resolve: async ({ id }, args, context: FastifyInstance) => {
 				const profile = await context.db.profiles.findOne({
 					key: 'userId',
 					equals: id,
@@ -62,7 +62,7 @@ export const GraphQLUser = new GraphQLObjectType({
 		},
 		posts: {
 			type: GraphQLPost,
-			async resolve({ id }, args, context: FastifyInstance) {
+			resolve: async ({ id }, args, context: FastifyInstance) => {
 				return await context.db.posts.findMany({
 					key: 'userId',
 					equals: id,
@@ -71,7 +71,7 @@ export const GraphQLUser = new GraphQLObjectType({
 		},
 		profile: {
 			type: GraphQLProfile,
-			async resolve({ id }, args, context: FastifyInstance) {
+			resolve: async ({ id }, args, context: FastifyInstance) => {
 				return await context.db.profiles.findOne({
 					key: 'userId',
 					equals: id,

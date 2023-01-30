@@ -83,17 +83,17 @@ export const RootMutation = new GraphQLObjectType({
 					equals: userId,
 				});
 
-				if (profileByUserId) {
-					return context.httpErrors.badRequest(ErrorMessages.PROFILE_EXISTS);
+				if (profileByUserId !== null) {
+					throw context.httpErrors.badRequest(ErrorMessages.PROFILE_EXISTS);
 				}
 
 				const memberType = await context.db.memberTypes.findOne({
 					key: 'id',
-					equals: memberTypeId
+					equals: memberTypeId,
 				});
 
 				if (!memberType) {
-					return context.httpErrors.notFound(ErrorMessages.MEMBER_TYPE_ERROR);
+					throw context.httpErrors.notFound(ErrorMessages.MEMBER_TYPE_ERROR);
 				}
 
 				const newProfile = await context.db.profiles.create(data);
@@ -247,7 +247,7 @@ export const RootMutation = new GraphQLObjectType({
 				});
 
 				if (!unSubscriber || !candidate) {
-					return context.httpErrors.notFound(ErrorMessages.NOT_FOUND);
+					throw context.httpErrors.notFound(ErrorMessages.NOT_FOUND);
 				}
 
 				const followerIndex = unSubscriber.subscribedToUserIds.findIndex(
@@ -259,7 +259,7 @@ export const RootMutation = new GraphQLObjectType({
 				);
 
 				if (followerIndex === -1 || subscriberIndex === -1) {
-					return context.httpErrors.notFound(ErrorMessages.BAD_REQUEST);
+					throw context.httpErrors.notFound(ErrorMessages.BAD_REQUEST);
 				}
 
 				const updatedUser = await context.db.users.change(id, {
