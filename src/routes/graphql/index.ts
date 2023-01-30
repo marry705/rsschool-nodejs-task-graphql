@@ -29,6 +29,8 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
 				depthLimit(GRAPHQL_DEPTH),
 			]);
 
+			fastify.loaders.clearCache();
+			
 			if (errors.length > 0) {
 				reply.send({ data: null, errors: errors });
 

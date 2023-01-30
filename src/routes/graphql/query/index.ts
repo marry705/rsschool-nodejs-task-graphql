@@ -70,10 +70,7 @@ export const RootQuery = new GraphQLObjectType({
 				{ id },
 				context: FastifyInstance
 			): Promise<UserEntity> => {
-				const user = await context.db.users.findOne({
-					key: 'id',
-					equals: id,
-				});
+				const user = await context.loaders.users.load(id);
 
 				if (!user) {
 					throw context.httpErrors.notFound(ErrorMessages.USER_ERROR);
@@ -92,10 +89,7 @@ export const RootQuery = new GraphQLObjectType({
 				{ id },
 				context: FastifyInstance
 			): Promise<ProfileEntity> => {
-				const profile = await context.db.profiles.findOne({
-					key: 'id',
-					equals: id,
-				});
+				const profile = await context.loaders.profiles.load(id);
 
 				if (!profile) {
 					throw context.httpErrors.notFound(ErrorMessages.PROFILE_ERROR);
@@ -114,10 +108,7 @@ export const RootQuery = new GraphQLObjectType({
 				{ id },
 				context: FastifyInstance
 			): Promise<PostEntity> => {
-				const post = await context.db.posts.findOne({
-					key: 'id',
-					equals: id,
-				});
+				const post = await context.loaders.posts.load(id);
 
 				if (!post) {
 					throw context.httpErrors.notFound(ErrorMessages.POST_ERROR);
@@ -136,10 +127,7 @@ export const RootQuery = new GraphQLObjectType({
 				{ id },
 				context: FastifyInstance
 			): Promise<MemberTypeEntity> => {
-				const memberType = await context.db.memberTypes.findOne({
-					key: 'id',
-					equals: id,
-				});
+				const memberType = await context.loaders.memberTypes.load(id);
 
 				if (!memberType) {
 					throw context.httpErrors.notFound(ErrorMessages.MEMBER_TYPE_ERROR);
