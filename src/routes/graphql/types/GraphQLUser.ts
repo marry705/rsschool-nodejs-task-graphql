@@ -35,11 +35,8 @@ export const GraphQLUser = new GraphQLObjectType({
 		},
 		userSubscribedTo: {
 			type: new GraphQLList(GraphQLUser),
-			resolve: async ({ id }, args, context: FastifyInstance) => {
-				return await context.db.users.findMany({
-					key: 'subscribedToUserIds',
-					inArray: id,
-				});
+			resolve: async ({ subscribedToUserIds }, args, context: FastifyInstance) => {
+				return await context.loaders.users.loadMany(subscribedToUserIds);
 			},
 		},
 		memberType: {
@@ -61,7 +58,7 @@ export const GraphQLUser = new GraphQLObjectType({
 			},
 		},
 		posts: {
-			type: GraphQLPost,
+			type: new GraphQLList(GraphQLPost),
 			resolve: async ({ id }, args, context: FastifyInstance) => {
 				return await context.db.posts.findMany({
 					key: 'userId',
