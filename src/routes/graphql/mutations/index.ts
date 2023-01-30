@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { GraphQLObjectType } from 'graphql';
+import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { MemberTypeEntity } from '../../../utils/DB/entities/DBMemberTypes';
 import { PostEntity } from '../../../utils/DB/entities/DBPosts';
 import { ProfileEntity } from '../../../utils/DB/entities/DBProfiles';
@@ -22,11 +22,11 @@ import {
 } from '../types';
 
 export const RootMutation = new GraphQLObjectType({
-	name: 'Mutation',
+	name: 'RootMutationType',
 	fields: {
 		createUser: {
 			type: GraphQLUser,
-			args: { data: { type: CreateUserDtoInput } },
+			args: { data: { type: new GraphQLNonNull(CreateUserDtoInput) } },
 			async resolve(
 				_,
 				{ data }: Record<'data', Omit<UserEntity, 'id'>>,
@@ -37,7 +37,7 @@ export const RootMutation = new GraphQLObjectType({
 		},
 		createPost: {
 			type: GraphQLPost,
-			args: { data: { type: CreatePostDtoInput } },
+			args: { data: { type: new GraphQLNonNull(CreatePostDtoInput) } },
 			async resolve(
 				_,
 				{ data }: Record<'data', Omit<PostEntity, 'id'>>,
@@ -61,7 +61,7 @@ export const RootMutation = new GraphQLObjectType({
 		},
 		createProfile: {
 			type: GraphQLProfile,
-			args: { data: { type: CreateProfileDtoInput } },
+			args: { data: { type: new GraphQLNonNull(CreateProfileDtoInput) } },
 			async resolve(
 				_,
 				{ data }: Record<'data', Omit<ProfileEntity, 'id'>>,
@@ -100,7 +100,7 @@ export const RootMutation = new GraphQLObjectType({
 		},
 		updateUser: {
 			type: GraphQLUser,
-			args: { data: { type: UpdateUserDtoInput } },
+			args: { data: { type: new GraphQLNonNull(UpdateUserDtoInput) } },
 			async resolve(
 				_,
 				{ data }: Record<'data', UserEntity>,
@@ -118,7 +118,7 @@ export const RootMutation = new GraphQLObjectType({
 		},
 		updatePost: {
 			type: GraphQLPost,
-			args: { data: { type: UpdatePostDtoInput } },
+			args: { data: { type: new GraphQLNonNull(UpdatePostDtoInput) } },
 			async resolve(
 				_,
 				{ data }: Record<'data', PostEntity>,
@@ -136,7 +136,7 @@ export const RootMutation = new GraphQLObjectType({
 		},
 		updateProfile: {
 			type: GraphQLProfile,
-			args: { data: { type: UpdateProfileDtoInput } },
+			args: { data: { type: new GraphQLNonNull(UpdateProfileDtoInput) } },
 			async resolve(
 				_,
 				{ data }: Record<'data', ProfileEntity>,
@@ -154,7 +154,7 @@ export const RootMutation = new GraphQLObjectType({
 		},
 		updateMemberType: {
 			type: GraphQLMemberType,
-			args: { data: { type: UpdateMemberDtoInput } },
+			args: { data: { type: new GraphQLNonNull(UpdateMemberDtoInput) } },
 			async resolve(
 				_,
 				{ data }: Record<'data', MemberTypeEntity>,
@@ -172,7 +172,7 @@ export const RootMutation = new GraphQLObjectType({
 		},
 		subscribeUser: {
 			type: GraphQLUser,
-			args: { data: { type: SubscribeUserDtoInput } },
+			args: { data: { type: new GraphQLNonNull(SubscribeUserDtoInput) } },
 			async resolve(
 				_,
 				{ data }: Record<'data', Pick<ProfileEntity, 'id' | 'userId'>>,
@@ -225,7 +225,7 @@ export const RootMutation = new GraphQLObjectType({
 		},
 		unSubscribeUser: {
 			type: GraphQLUser,
-			args: { data: { type: UnSubscribeUserDtoInput } },
+			args: { data: { type: new GraphQLNonNull(UnSubscribeUserDtoInput) } },
 			async resolve(
 				_,
 				{ data }: Record<'data', Pick<ProfileEntity, 'id' | 'userId'>>,

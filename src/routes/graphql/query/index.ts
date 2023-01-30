@@ -18,7 +18,7 @@ import {
 } from '../types';
 
 export const RootQuery = new GraphQLObjectType({
-	name: 'Query',
+	name: 'RootQueryType',
 	fields: {
 		users: {
 			type: new GraphQLList(GraphQLUser),
