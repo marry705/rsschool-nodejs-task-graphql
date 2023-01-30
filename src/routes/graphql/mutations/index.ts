@@ -110,10 +110,10 @@ export const RootMutation = new GraphQLObjectType({
 				context: FastifyInstance
 			) => {
 				const { id } = data;
-				
+
 				const user = await context.db.users.findOne({
 					key: 'id',
-					equals: id
+					equals: id,
 				});
 
 				if (!user) {
@@ -134,10 +134,10 @@ export const RootMutation = new GraphQLObjectType({
 				context: FastifyInstance
 			) => {
 				const { id } = data;
-				
+
 				const post = await context.db.posts.findOne({
 					key: 'id',
-					equals: id
+					equals: id,
 				});
 
 				if (!post) {
@@ -158,10 +158,10 @@ export const RootMutation = new GraphQLObjectType({
 				context: FastifyInstance
 			) => {
 				const { id } = data;
-				
+
 				const profile = await context.db.profiles.findOne({
 					key: 'id',
-					equals: id
+					equals: id,
 				});
 
 				if (!profile) {
@@ -182,10 +182,10 @@ export const RootMutation = new GraphQLObjectType({
 				context: FastifyInstance
 			) => {
 				const { id } = data;
-				
+
 				const member = await context.db.memberTypes.findOne({
 					key: 'id',
-					equals: id
+					equals: id,
 				});
 
 				if (!member) {

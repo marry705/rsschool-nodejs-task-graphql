@@ -30,7 +30,7 @@ const plugin: FastifyPluginAsyncJsonSchemaToTs = async (
 			]);
 
 			fastify.loaders.clearCache();
-			
+
 			if (errors.length > 0) {
 				reply.send({ data: null, errors: errors });
 

@@ -35,7 +35,11 @@ export const GraphQLUser = new GraphQLObjectType({
 		},
 		userSubscribedTo: {
 			type: new GraphQLList(GraphQLUser),
-			resolve: async ({ subscribedToUserIds }, args, context: FastifyInstance) => {
+			resolve: async (
+				{ subscribedToUserIds },
+				args,
+				context: FastifyInstance
+			) => {
 				return await context.loaders.users.loadMany(subscribedToUserIds);
 			},
 		},
